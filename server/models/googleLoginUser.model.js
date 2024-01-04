@@ -25,6 +25,5 @@ const googleLoginSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model("User", googleLoginSchema);
+export const User = mongoose.model("User", googleLoginSchema);
 
-module.exports = User;
