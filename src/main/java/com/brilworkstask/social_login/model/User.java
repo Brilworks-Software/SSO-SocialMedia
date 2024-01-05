@@ -30,11 +30,11 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "reference_id")
-    private Long referenceId;
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "provider")
     @Enumerated(EnumType.STRING)
-    private ProviderEnum providerEnum;
+    private ProviderEnum role;
 
 }
