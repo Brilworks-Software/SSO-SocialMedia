@@ -7,9 +7,11 @@ import { toast, ToastContainer } from "react-toastify";
 import { gapi } from "gapi-script";
 
 const GoogleLoginForm = () => {
+  // Accessing context for user data management
   const { storeUserData } = useUser();
   const navigate = useNavigate();
 
+  // Initializing Google API on component mount
   useEffect(() => {
     gapi.load("auth2", () => {
       gapi.auth2.init({
@@ -19,9 +21,10 @@ const GoogleLoginForm = () => {
     });
   }, []);
 
+  // Helper function to display toasts
   const handleToast = (message, type = "info") => {
     toast[type](message, {
-      position: "top-right",
+      position: "top",
       autoClose: 3000,
       hideProgressBar: true,
       closeOnClick: true,
@@ -30,27 +33,35 @@ const GoogleLoginForm = () => {
     });
   };
 
+  // Callback function for GoogleLogin component
   const responseGoogle = async (response) => {
+    if (response.error) {
+      // Handling Google login errors
+      handleToast("Error during Google login. Please try again.", "error");
+      return;
+    }
+
     const { tokenId } = response;
 
     try {
+      // Making API request to save user data on the server
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/v1/user/saveUserData`,
         { tokenId }
       );
 
-      const { user, message } = data;
-
-      if (user) {
+      const { user, message, jwtToken } = data;
+      if (user && jwtToken) {
+        // Storing user data in context and navigating to the main page
         storeUserData(user);
         handleToast(message, "success");
         navigate("/");
       } else {
-        console.log("Existing user data:", data.user);
+        // Handling cases where user or token is missing
         handleToast(message);
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      // Handling general login errors
       handleToast("Error during login. Please try again.", "error");
     }
   };
@@ -59,7 +70,6 @@ const GoogleLoginForm = () => {
     <div>
       <GoogleLogin
         clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
-        buttonText="Login with Google"
         onSuccess={responseGoogle}
         onFailure={responseGoogle}
         cookiePolicy={"single_host_origin"}

@@ -1,0 +1,8 @@
+export const INTERNAL_ERROR = "Internal Server Error"
+export const NOT_FOUND = "Not Found"
+export const BAD_REQUEST = "Bad Request"
+export const UNAUTHORIZED = "Unauthorized"
+export const USERDATA_SAVED_SUCCESSFULLY = "User data saved successfully"
+export const TOKEN_ID_REQUIRED = "Token ID required"
+export const DUPLICATE_USER = "User already exists" 
+export const NOT_AUTHORIZED = "User is not authorized"

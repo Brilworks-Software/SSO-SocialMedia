@@ -1,6 +1,0 @@
-<!-- This is the .env file which you need to rename to the ".env" file and need to enter the below details
-to be able to run this front end code : -->
-
-VITE_GOOGLE_CLIENT_ID = "Your google console cloud projects CLIENT_ID"
-VITE_API_URL = "Your backend api url"
-VITE_GOOGLE_API_USERINFO = "https://www.googleapis.com/auth/userinfo.email"
