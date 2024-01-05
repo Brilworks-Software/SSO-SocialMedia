@@ -11,7 +11,9 @@ public class NotAcceptableException extends BaseException {
 
     public enum NotAcceptableExceptionMSG {
         REFERENCE_ID_SHOULD_NOT_BLANKED("4060001", "Reference id is null", "Reference id is null"),
-        ACCESS_TOKEN_IS_NOT_NULL("406002", "Access token is null", "Access token is null");
+        ACCESS_TOKEN_IS_NOT_NULL("406002", "Access token is null", "Access token is null"),
+        TOKEN_INVALID_OR_EXPIRED("406003","Token is invalid or expired","Token is invalid or expired"),
+        INVALID_RESPONCE("406003","Responce is invalid", "Responce is invalid");
 
         private String statusCode;
         private String errorMessage;

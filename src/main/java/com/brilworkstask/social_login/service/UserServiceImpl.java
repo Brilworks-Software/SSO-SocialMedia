@@ -1,17 +1,15 @@
 package com.brilworkstask.social_login.service;
 
+import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
 import com.brilworkstask.social_login.enums.ProviderEnum;
 import com.brilworkstask.social_login.exception.NotAcceptableException;
+import com.brilworkstask.social_login.model.User;
 import com.brilworkstask.social_login.repository.UserRepository;
 import com.brilworkstask.social_login.utils.Constants;
 import com.brilworkstask.social_login.utils.OAuthUtils;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.User;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
-import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,17 +27,18 @@ public class UserServiceImpl implements UserService{
     private FacebookConnectionFactory facebookConnectionFactory;
 
     @Override
-    public String save(User userProfile) {
-          if (null == userProfile.getId()){
+    public String save(SocialProfileDetailsTransfer socialProfileDetailsTransfer) {
+          if (null == socialProfileDetailsTransfer.getId()){
             throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.REFERENCE_ID_SHOULD_NOT_BLANKED);
           }
         List<Long> referenceIds = userRepository.findReferenceIds();
-        if (!referenceIds.contains(Long.valueOf(userProfile.getId()))) {
-            com.brilworkstask.social_login.model.User user =new com.brilworkstask.social_login.model.User();
-            user.setEmail(userProfile.getEmail());
-            user.setFirstName(userProfile.getFirstName());
-            user.setLastName(userProfile.getLastName());
-            user.setReferenceId(Long.valueOf(userProfile.getId()));
+        // Check if the current social profile's ID already exists in the repository
+        if (!referenceIds.contains(Long.valueOf(socialProfileDetailsTransfer.getId()))) {
+            User user = new User();
+            user.setEmail(socialProfileDetailsTransfer.getEmail());
+            user.setFirstName(socialProfileDetailsTransfer.getFirstName());
+            user.setLastName(socialProfileDetailsTransfer.getLastName());
+            user.setReferenceId(Long.valueOf(socialProfileDetailsTransfer.getId()));
             user.setProviderEnum(ProviderEnum.FACEBOOK);
             userRepository.save(user);
             return Constants.SUCCESS;
@@ -48,13 +47,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String fetchUserData(String accessToken) {
-        if (null == accessToken){
-            throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.ACCESS_TOKEN_IS_NOT_NULL);
-        }
-        User userProfile = oAuthUtils.getUserProfileFromFacebookUsingAccessToken(accessToken);
-        String responce = save(userProfile);
-        return responce;
+    public String fetchUserData(String accessToken) throws BadRequestException {
+            if (null == accessToken){
+                throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.ACCESS_TOKEN_IS_NOT_NULL);
+            }
+           // Fetch user profile data using the access token
+            SocialProfileDetailsTransfer socialProfileDetailsTransfer = oAuthUtils.getRestTemplateFacebook(accessToken);
+            String responce = save(socialProfileDetailsTransfer);
+            return responce;
     }
 
     @Override
@@ -62,8 +62,9 @@ public class UserServiceImpl implements UserService{
         if (null == authenticationCode){
             throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.ACCESS_TOKEN_IS_NOT_NULL);
         }
-        User userProfile = oAuthUtils.getUserProfileFromFacebookUsingAuthCode(authenticationCode);
-        String responce = save(userProfile);
+        // Fetch user profile data using the access token
+        SocialProfileDetailsTransfer socialProfileDetailsTransfer = oAuthUtils.getUserProfileFromFacebookUsingAuthCode(authenticationCode);
+        String responce = save(socialProfileDetailsTransfer);
         return responce;
     }
 }

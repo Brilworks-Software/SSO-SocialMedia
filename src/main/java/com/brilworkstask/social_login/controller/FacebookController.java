@@ -2,6 +2,7 @@ package com.brilworkstask.social_login.controller;
 
 import com.brilworkstask.social_login.service.UserService;
 import com.brilworkstask.social_login.utils.OAuthUtils;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
@@ -27,20 +28,24 @@ public class FacebookController {
         this.facebookConnectionFactory = facebookConnectionFactory;
     }
 
+
+    // Initiates the connection to Facebook for authentication
     @GetMapping("/connect/facebook")
     public String connectFacebook(){
         OAuth2Parameters parameters = oAuthUtils.getOauth2Parameters();
         return "redirect:" + facebookConnectionFactory.getOAuthOperations().buildAuthorizeUrl(parameters);
     }
 
+    // Callback URL after successful authentication with Facebook
     @GetMapping("/connect/facebook/callback")
     public ResponseEntity<String> connectFacebookCallback(@RequestParam(name = "code") String authenticationCode){
        String responce = userService.fetchUserDataUsingCallBackApi(authenticationCode);
        return ResponseEntity.ok(responce);
     }
 
+    // API endpoint to fetch user data from Facebook using an access token
     @PostMapping("/facebook/fetch-user-data")
-    public ResponseEntity<?> fetchUserData(@RequestParam(name = "token", required = false) String accessToken){
+    public ResponseEntity<?> fetchUserData(@RequestParam(name = "token", required = false) String accessToken) throws BadRequestException {
         String responce = userService.fetchUserData(accessToken);
         return ResponseEntity.ok(responce);
     }

@@ -10,5 +10,9 @@ public interface Constants {
     String FAIL = "fail";
     String LOGGED_IN_PROFILE = "me";
     String ALREADY_EXIST = "User Already Exist !!";
+    Object NULL_CONSTANT = null;
+    String FACEBOOK_API_URL = "https://graph.facebook.com/me?fields=id,email,first_name,last_name&access_token=";
+    String REDIRECT_URL = "http://localhost:8080/user/social-login/connect/facebook/callback";
+
 
 }
