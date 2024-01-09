@@ -2,6 +2,7 @@ package com.brilworkstask.social_login.service;
 
 import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
 import com.brilworkstask.social_login.enums.ProviderEnum;
+import com.brilworkstask.social_login.enums.UserStatus;
 import com.brilworkstask.social_login.exception.NotAcceptableException;
 import com.brilworkstask.social_login.model.User;
 import com.brilworkstask.social_login.repository.UserRepository;
@@ -47,25 +48,39 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String fetchUserDataFromFacebookApi(String accessToken){
+    public SocialProfileDetailsTransfer fetchUserDataFromFacebookApi(String accessToken){
             if (null == accessToken){
                 throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.ACCESS_TOKEN_IS_NOT_NULL);
             }
            // Fetch user profile data using the access token
             SocialProfileDetailsTransfer socialProfileDetailsTransfer = oAuthUtils.getRestTemplateFacebook(accessToken);
             String responce = save(socialProfileDetailsTransfer);
-            return responce;
+            if (responce.equals(Constants.SUCCESS)){
+                socialProfileDetailsTransfer.setStatus(UserStatus.SAVED);
+            } else if (responce.equals(Constants.ALREADY_EXIST)) {
+                socialProfileDetailsTransfer.setStatus(UserStatus.ALREADY_EXIST);
+            } else {
+                socialProfileDetailsTransfer.setStatus(UserStatus.FAIL);
+            }
+            return socialProfileDetailsTransfer;
     }
 
     @Override
-    public String fetchUserDataFromLinkedinApi(String accessToken) {
+    public SocialProfileDetailsTransfer fetchUserDataFromLinkedinApi(String accessToken) {
         if (null == accessToken){
             throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.ACCESS_TOKEN_IS_NOT_NULL);
         }
 //         Fetch user profile data using the access token
         SocialProfileDetailsTransfer socialProfileDetailsTransfer = oAuthUtils.getRestTemplateLinkedInII(accessToken);
         String responce = save(socialProfileDetailsTransfer);
-        return responce;
+        if (responce.equals(Constants.SUCCESS)){
+            socialProfileDetailsTransfer.setStatus(UserStatus.SAVED);
+        } else if (responce.equals(Constants.ALREADY_EXIST)) {
+            socialProfileDetailsTransfer.setStatus(UserStatus.ALREADY_EXIST);
+        } else {
+            socialProfileDetailsTransfer.setStatus(UserStatus.FAIL);
+        }
+        return socialProfileDetailsTransfer;
     }
 
     @Override

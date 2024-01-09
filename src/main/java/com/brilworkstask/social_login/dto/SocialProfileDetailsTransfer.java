@@ -1,6 +1,7 @@
 package com.brilworkstask.social_login.dto;
 
 import com.brilworkstask.social_login.enums.ProviderEnum;
+import com.brilworkstask.social_login.enums.UserStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
@@ -11,4 +12,5 @@ public class SocialProfileDetailsTransfer {
     private String firstName;
     private String lastName;
     private ProviderEnum provider;
+    private UserStatus status;
 }

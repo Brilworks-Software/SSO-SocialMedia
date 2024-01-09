@@ -1,5 +1,6 @@
 package com.brilworkstask.social_login.controller;
 
+import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
 import com.brilworkstask.social_login.service.UserService;
 import com.brilworkstask.social_login.utils.OAuthUtils;
 import org.apache.coyote.BadRequestException;
@@ -43,15 +44,15 @@ public class AuthController {
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/facebook/fetch-user-data")
     public ResponseEntity<?> fetchUserDataFromFacebook(@RequestParam(name = "token", required = false) String accessToken){
-        String responce = userService.fetchUserDataFromFacebookApi(accessToken);
-        return ResponseEntity.ok(responce);
+        SocialProfileDetailsTransfer userDetails = userService.fetchUserDataFromFacebookApi(accessToken);
+        return ResponseEntity.ok(userDetails);
     }
 
     // API endpoint to fetch user data from LinkedIn using an access token
     @PostMapping("/linked-in/fetch-user-data")
     public ResponseEntity<?> fetchUserDataFromLinkedIn(@RequestParam(name = "token", required = false) String accessToken){
-        String responce = userService.fetchUserDataFromLinkedinApi(accessToken);
-        return ResponseEntity.ok(responce);
+        SocialProfileDetailsTransfer userDetails = userService.fetchUserDataFromLinkedinApi(accessToken);
+        return ResponseEntity.ok(userDetails);
     }
 
 }

@@ -6,7 +6,7 @@ import org.springframework.social.facebook.api.User;
 
 public interface UserService {
     public String save(SocialProfileDetailsTransfer socialProfileDetailsTransfer);
-    public String fetchUserDataFromFacebookApi(String accessToken) ;
-    public String fetchUserDataFromLinkedinApi(String accessToken);
+    public SocialProfileDetailsTransfer fetchUserDataFromFacebookApi(String accessToken) ;
+    public SocialProfileDetailsTransfer fetchUserDataFromLinkedinApi(String accessToken);
     public String fetchUserDataUsingCallBackApi(String authenticationCode);
 }
