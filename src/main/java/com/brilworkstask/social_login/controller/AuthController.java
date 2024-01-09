@@ -8,14 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user/social-login")
-public class FacebookController {
+public class AuthController {
     private final FacebookConnectionFactory facebookConnectionFactory;
 
     @Autowired
@@ -24,29 +21,36 @@ public class FacebookController {
     @Autowired
     OAuthUtils oAuthUtils;
 
-    public FacebookController(FacebookConnectionFactory facebookConnectionFactory){
+    public AuthController(FacebookConnectionFactory facebookConnectionFactory){
         this.facebookConnectionFactory = facebookConnectionFactory;
     }
 
-
     // Initiates the connection to Facebook for authentication
-    @GetMapping("/connect/facebook")
+    @GetMapping("/facebook/connect")
     public String connectFacebook(){
         OAuth2Parameters parameters = oAuthUtils.getOauth2Parameters();
         return "redirect:" + facebookConnectionFactory.getOAuthOperations().buildAuthorizeUrl(parameters);
     }
 
     // Callback URL after successful authentication with Facebook
-    @GetMapping("/connect/facebook/callback")
+    @GetMapping("/facebook/connect/callback")
     public ResponseEntity<String> connectFacebookCallback(@RequestParam(name = "code") String authenticationCode){
        String responce = userService.fetchUserDataUsingCallBackApi(authenticationCode);
        return ResponseEntity.ok(responce);
     }
 
     // API endpoint to fetch user data from Facebook using an access token
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/facebook/fetch-user-data")
-    public ResponseEntity<?> fetchUserData(@RequestParam(name = "token", required = false) String accessToken) throws BadRequestException {
-        String responce = userService.fetchUserData(accessToken);
+    public ResponseEntity<?> fetchUserDataFromFacebook(@RequestParam(name = "token", required = false) String accessToken){
+        String responce = userService.fetchUserDataFromFacebookApi(accessToken);
+        return ResponseEntity.ok(responce);
+    }
+
+    // API endpoint to fetch user data from LinkedIn using an access token
+    @PostMapping("/linked-in/fetch-user-data")
+    public ResponseEntity<?> fetchUserDataFromLinkedIn(@RequestParam(name = "token", required = false) String accessToken){
+        String responce = userService.fetchUserDataFromLinkedinApi(accessToken);
         return ResponseEntity.ok(responce);
     }
 

@@ -13,7 +13,8 @@ public class NotAcceptableException extends BaseException {
         REFERENCE_ID_SHOULD_NOT_BLANKED("4060001", "Reference id is null", "Reference id is null"),
         ACCESS_TOKEN_IS_NOT_NULL("406002", "Access token is null", "Access token is null"),
         TOKEN_INVALID_OR_EXPIRED("406003","Token is invalid or expired","Token is invalid or expired"),
-        INVALID_RESPONCE("406003","Responce is invalid", "Responce is invalid");
+        INVALID_RESPONCE("406003","Responce is invalid", "Responce is invalid"),
+        ID_IS_NOT_NULL("406004", "Id is null", "Id is null");
 
         private String statusCode;
         private String errorMessage;

@@ -31,7 +31,7 @@ public class User {
     private String email;
 
     @Column(name = "reference_id")
-    private Long referenceId;
+    private String referenceId;
 
     @Column(name = "provider")
     @Enumerated(EnumType.STRING)

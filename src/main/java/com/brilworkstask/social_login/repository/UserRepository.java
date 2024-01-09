@@ -9,6 +9,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u.referenceId FROM User u")
-    List<Long> findReferenceIds();
+    List<String> findReferenceIds();
 
 }

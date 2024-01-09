@@ -31,15 +31,15 @@ public class UserServiceImpl implements UserService{
           if (null == socialProfileDetailsTransfer.getId()){
             throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.REFERENCE_ID_SHOULD_NOT_BLANKED);
           }
-        List<Long> referenceIds = userRepository.findReferenceIds();
+        List<String> referenceIds = userRepository.findReferenceIds();
         // Check if the current social profile's ID already exists in the repository
-        if (!referenceIds.contains(Long.valueOf(socialProfileDetailsTransfer.getId()))) {
+        if (!referenceIds.contains(socialProfileDetailsTransfer.getId())) {
             User user = new User();
             user.setEmail(socialProfileDetailsTransfer.getEmail());
             user.setFirstName(socialProfileDetailsTransfer.getFirstName());
             user.setLastName(socialProfileDetailsTransfer.getLastName());
-            user.setReferenceId(Long.valueOf(socialProfileDetailsTransfer.getId()));
-            user.setProviderEnum(ProviderEnum.FACEBOOK);
+            user.setReferenceId(socialProfileDetailsTransfer.getId());
+            user.setProviderEnum(socialProfileDetailsTransfer.getProvider());
             userRepository.save(user);
             return Constants.SUCCESS;
         }
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String fetchUserData(String accessToken) throws BadRequestException {
+    public String fetchUserDataFromFacebookApi(String accessToken){
             if (null == accessToken){
                 throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.ACCESS_TOKEN_IS_NOT_NULL);
             }
@@ -55,6 +55,17 @@ public class UserServiceImpl implements UserService{
             SocialProfileDetailsTransfer socialProfileDetailsTransfer = oAuthUtils.getRestTemplateFacebook(accessToken);
             String responce = save(socialProfileDetailsTransfer);
             return responce;
+    }
+
+    @Override
+    public String fetchUserDataFromLinkedinApi(String accessToken) {
+        if (null == accessToken){
+            throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.ACCESS_TOKEN_IS_NOT_NULL);
+        }
+//         Fetch user profile data using the access token
+        SocialProfileDetailsTransfer socialProfileDetailsTransfer = oAuthUtils.getRestTemplateLinkedInII(accessToken);
+        String responce = save(socialProfileDetailsTransfer);
+        return responce;
     }
 
     @Override
