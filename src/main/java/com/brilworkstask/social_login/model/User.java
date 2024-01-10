@@ -21,20 +21,27 @@ public class User {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "firstname")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "reference_id")
-    private String referenceId;
+    @Column(name = "social_id")
+    private String socialId;
 
     @Column(name = "provider")
     @Enumerated(EnumType.STRING)
     private ProviderEnum providerEnum;
 
+    public User(String firstName, String lastName, String email, String socialId, ProviderEnum providerEnum) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.socialId = socialId;
+        this.providerEnum = providerEnum;
+    }
 }

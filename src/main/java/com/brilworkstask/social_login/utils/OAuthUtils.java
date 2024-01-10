@@ -86,10 +86,10 @@ public class OAuthUtils {
                 }
                 // Set responce field in FieldsTransfer to reduce code length & improve readability
                 FieldsTransfer fields = new FieldsTransfer();
-                fields.setId("id");
-                fields.setEmail("email");
-                fields.setFirstName("first_name");
-                fields.setLastName("last_name");
+                fields.setId(Constants.FACEBOOK_ID);
+                fields.setEmail(Constants.FACEBOOK_EMAIL);
+                fields.setFirstName(Constants.FACEBOOK_FIRSTNAME);
+                fields.setLastName(Constants.FACEBOOK_LASTNAME);
                 SocialProfileDetailsTransfer socialProfileDetails = getProfileDetailsFromResponse(response, fields);
                 socialProfileDetails.setProvider(ProviderEnum.FACEBOOK);
                 return socialProfileDetails;
@@ -100,7 +100,7 @@ public class OAuthUtils {
         return (SocialProfileDetailsTransfer) Constants.NULL_CONSTANT;
     }
 
-    public SocialProfileDetailsTransfer getRestTemplateLinkedInII(String token){
+    public SocialProfileDetailsTransfer getRestTemplateLinkedIn(String token){
         logger.info("Retrieving user profile from LinkedIn using RestTemplate");
         // Set headers for the request
         HttpHeaders headers = new HttpHeaders();
@@ -113,15 +113,15 @@ public class OAuthUtils {
             ResponseEntity<String> responseEntity = template.exchange(Constants.LINKEDIN_API_URL, HttpMethod.GET, requestEntity, String.class);
             if (responseEntity.getStatusCode().equals(HttpStatus.OK)){
                 String response = responseEntity.getBody();
-                if (response.isEmpty()){
+                if (StringUtils.isEmpty(response)){ // TODO - Jay check same all over the project.
                     throw new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.INVALID_RESPONCE);
                 }
              // Set responce field in FieldsTransfer to reduce code length & improve readability
                 FieldsTransfer fields = new FieldsTransfer();
-                fields.setId("sub");
-                fields.setFirstName("given_name");
-                fields.setLastName("family_name");
-                fields.setEmail("email");
+                fields.setId(Constants.LINKEDIN_ID); // TODO - Jay - move this all string to constants
+                fields.setFirstName(Constants.LINKEDIN_FIRSTNAME);
+                fields.setLastName(Constants.LINKEDIN_LASTNAME);
+                fields.setEmail(Constants.LINKEDIN_EMAIL);
                 SocialProfileDetailsTransfer socialProfileDetailsTransfer = getProfileDetailsFromResponse(response, fields);
                 socialProfileDetailsTransfer.setProvider(ProviderEnum.LINKEDIN);
                 return socialProfileDetailsTransfer;
@@ -145,7 +145,7 @@ public class OAuthUtils {
             socialProfileDetails.setId(Optional.ofNullable(jsonNode.get(fields.getId()))
                     .filter(JsonNode::isTextual)
                     .map(JsonNode::asText)
-                    .orElseThrow(() -> new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.ID_IS_NOT_NULL)));
+                    .orElseThrow(() -> new NotAcceptableException(NotAcceptableException.NotAcceptableExceptionMSG.SOCIAL_ID_IS_NOT_NULL)));
             // Retrieve and set the email if available
             Optional.ofNullable(jsonNode.get(fields.getEmail()))
                     .filter(JsonNode::isTextual)

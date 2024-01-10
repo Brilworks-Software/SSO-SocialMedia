@@ -2,6 +2,7 @@ package com.brilworkstask.social_login.controller;
 
 import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
 import com.brilworkstask.social_login.service.UserService;
+import com.brilworkstask.social_login.service.UserServiceImpl;
 import com.brilworkstask.social_login.utils.OAuthUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +15,19 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/user/social-login")
 public class AuthController {
-    private final FacebookConnectionFactory facebookConnectionFactory;
+    // TODO - Jay - Move this to userService
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
 
     @Autowired
     OAuthUtils oAuthUtils;
-
-    public AuthController(FacebookConnectionFactory facebookConnectionFactory){
-        this.facebookConnectionFactory = facebookConnectionFactory;
-    }
 
     // Initiates the connection to Facebook for authentication
     @GetMapping("/facebook/connect")
     public String connectFacebook(){
         OAuth2Parameters parameters = oAuthUtils.getOauth2Parameters();
-        return "redirect:" + facebookConnectionFactory.getOAuthOperations().buildAuthorizeUrl(parameters);
+        return "redirect:" + userService.facebookConnectionFactory.getOAuthOperations().buildAuthorizeUrl(parameters);
     }
 
     // Callback URL after successful authentication with Facebook

@@ -14,7 +14,7 @@ public class NotAcceptableException extends BaseException {
         ACCESS_TOKEN_IS_NOT_NULL("406002", "Access token is null", "Access token is null"),
         TOKEN_INVALID_OR_EXPIRED("406003","Token is invalid or expired","Token is invalid or expired"),
         INVALID_RESPONCE("406003","Responce is invalid", "Responce is invalid"),
-        ID_IS_NOT_NULL("406004", "Id is null", "Id is null");
+        SOCIAL_ID_IS_NOT_NULL("406004", "Social Id is null", "Id is null");
 
         private String statusCode;
         private String errorMessage;
