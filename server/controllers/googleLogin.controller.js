@@ -1,8 +1,8 @@
-import { User } from "../models/googleLoginUser.model.js";
+import { User } from "../models/socialLogin.model.js";
 import { generateJwtToken } from "../config/generateToken.js";
 import { OAuth2Client } from "google-auth-library";
 import {
-  DUPLICATE_USER,
+  USER_ALREADY_EXISTS,
   INTERNAL_ERROR,
   TOKEN_ID_REQUIRED,
   USERDATA_SAVED_SUCCESSFULLY,
@@ -10,27 +10,28 @@ import {
 
 // Fetching client ID from environment variables
 const clientId = process.env.CLIENT_ID;
-console.log("clientId", clientId);
 
 // Creating an instance of OAuth2Client with the provided client ID
 const authClient = new OAuth2Client(clientId);
 
-// Controller function to save user data from Google login
+// Controller function to save user data from social login
 export const saveUserData = async (req, res) => {
-  // Extracting tokenId from the request body
-  const { tokenId } = req.body;
-
+  // Extracting tokenId and provider from the request body
+  const { tokenId, provider } = req.body;
   try {
     // Checking if tokenId is present in the request
     if (!tokenId) {
       return res.status(400).json({ error: TOKEN_ID_REQUIRED });
     }
 
-    // Verifying the Google ID token using the OAuth2Client
-    const ticket = await authClient.verifyIdToken({
-      idToken: tokenId,
-      audience: clientId,
-    });
+    // Verifying the ID token using the OAuth2Client based on the provider
+    let ticket;
+    if (provider === "google") {
+      ticket = await authClient.verifyIdToken({
+        idToken: tokenId,
+        audience: clientId,
+      });
+    } // Add additional providers here if needed
 
     // Extracting user information from the token payload
     const { email, sub, name, picture } = ticket.getPayload();
@@ -41,10 +42,11 @@ export const saveUserData = async (req, res) => {
     if (!user) {
       // Creating a new user if not found and saving to the database
       const newUser = new User({
-        googleId: sub,
+        id: sub,
         email,
-        userName: name,
-        profilePicture: picture,
+        name: name,
+        picture: picture,
+        socialAccounts: [provider], // Add the provider to the socialAccounts array
       });
 
       await newUser.save();
@@ -59,12 +61,18 @@ export const saveUserData = async (req, res) => {
         message: USERDATA_SAVED_SUCCESSFULLY,
       });
     } else {
-      // If user already exists, generate JWT token and respond with a user already exists message
+      // update the socialAccounts if its not already there
+      if (!user.socialAccounts.includes(provider)) {
+        user.socialAccounts.push(provider);
+        await user.save();
+      }
+
+      // Generate JWT token and respond with a user already exists message
       const jwtToken = generateJwtToken(user);
       return res.status(200).json({
         user,
         jwtToken,
-        message: DUPLICATE_USER,
+        message: USER_ALREADY_EXISTS,
       });
     }
   } catch (error) {

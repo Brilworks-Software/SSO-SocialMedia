@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const googleLoginSchema = new mongoose.Schema(
+const socialLoginSchema = new mongoose.Schema(
   {
-    googleId: {
+    id: {
       type: String,
       required: true,
     },
-    userName: {
+    name: {
       type: String,
       required: true,
     },
@@ -15,19 +15,19 @@ const googleLoginSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    profilePicture: {
+    picture: {
       type: String,
       required: true,
     },
-    isDeleted:{
-      type:Boolean,
-      default:false
-    }
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    socialAccounts: [{ type: String }],
   },
   {
     timestamps: true,
   }
 );
 
-export const User = mongoose.model("User", googleLoginSchema);
-
+export const User = mongoose.model("User", socialLoginSchema);

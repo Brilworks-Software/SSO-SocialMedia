@@ -1,7 +1,12 @@
-<!-- This is the sample env file : to use this first change the name of the file to the .env file and then update the changes as given below:  -->
+in this file update the configuration as per mentioned :  
+also dont forgot to change the name of the file to '.env'
 
-PORT = port number as your servver was running
-MONGODB_URI = here add the url of your database
-CLIENT_ID = here add your clientId(which you will get from the google cloud console in the API and Services ---> credentials )
-CLIENT_SECRET = add ypur client secret (which you will get from the google cloud console in the API and Services ---> credentials)
-JWT_SECRET = add a JWT secret as you want and for the better security generate a string in javascript  
+PORT = "your port number on which the server is running"
+MONGODB_URI = "enter your database url"
+GOOGLE_CLIENT_ID = "your google project client id"
+GOOGLE_CLIENT_SECRET = "your google project client"
+JWT_SECRET = "your jwt secret token"
+FACEBOOK_CLIENT_ID = "your facebook project client id"
+FACEBOOK_SECRET_ID = "your facebook project secret id"
+LINKEDIN_CLIENT_ID = "your  linkedin project client id"
+LINKEDIN_SECRET_ID = "your linkedin project secret id"
