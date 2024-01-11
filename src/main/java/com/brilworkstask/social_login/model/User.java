@@ -33,15 +33,11 @@ public class User {
     @Column(name = "social_id")
     private String socialId;
 
-    @Column(name = "provider")
-    @Enumerated(EnumType.STRING)
-    private ProviderEnum providerEnum;
-
-    public User(String firstName, String lastName, String email, String socialId, ProviderEnum providerEnum) {
+    public User(String firstName, String lastName, String email, String socialId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.socialId = socialId;
-        this.providerEnum = providerEnum;
+
     }
 }

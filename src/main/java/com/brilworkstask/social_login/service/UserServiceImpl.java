@@ -47,8 +47,7 @@ public class UserServiceImpl implements UserService{
                 User user = new User(socialProfileDetailsTransfer.getFirstName(),
                         socialProfileDetailsTransfer.getLastName(),
                         socialProfileDetailsTransfer.getEmail(),
-                        socialProfileDetailsTransfer.getId(),
-                        socialProfileDetailsTransfer.getProvider()); // TODO - Jay - Pass all the fields here
+                        socialProfileDetailsTransfer.getId()); // TODO - Jay - Pass all the fields here
                 userRepository.save(user);
                 UserProvider userProvider = new UserProvider(user.getId(), socialProfileDetailsTransfer.getProvider());
                 userProviderRepository.save(userProvider);
@@ -68,8 +67,7 @@ public class UserServiceImpl implements UserService{
             User user = new User(socialProfileDetailsTransfer.getFirstName(),
                     socialProfileDetailsTransfer.getLastName(),
                     socialProfileDetailsTransfer.getEmail(),
-                    socialProfileDetailsTransfer.getId(),
-                    socialProfileDetailsTransfer.getProvider()); // TODO - Jay - Pass all the fields here
+                    socialProfileDetailsTransfer.getId()); // TODO - Jay - Pass all the fields here
                 userRepository.save(user);
                 UserProvider userProvider = new UserProvider(user.getId(), socialProfileDetailsTransfer.getProvider());
                 userProviderRepository.save(userProvider);

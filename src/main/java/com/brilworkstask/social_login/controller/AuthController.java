@@ -46,6 +46,7 @@ public class AuthController {
     }
 
     // API endpoint to fetch user data from LinkedIn using an access token
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/linked-in/fetch-user-data")
     public ResponseEntity<?> fetchUserDataFromLinkedIn(@RequestParam(name = "token", required = false) String accessToken){
         SocialProfileDetailsTransfer userDetails = userService.fetchUserDataFromLinkedinApi(accessToken);
