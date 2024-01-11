@@ -7,7 +7,7 @@ import SocialLoginForm from "./pages/SocialLoginForm";
 
 const App = () => {
   return (
-    <div className="w-screen h-screen flex flex-col">
+    <div className="w-[100%] h-[100%] flex flex-col">
       <UserProvider>
         <BrowserRouter>
           <Navbar />

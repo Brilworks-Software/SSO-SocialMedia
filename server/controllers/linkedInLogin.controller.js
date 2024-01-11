@@ -1,13 +1,10 @@
-import dotenv from "dotenv";
-dotenv.config();
 import axios from "axios";
 import passport from "passport";
 import { Strategy as LinkedInStrategy } from "passport-linkedin-oauth2";
 import { User } from "../models/socialLogin.model.js";
+import { generateJwtToken } from "../config/generateToken.js";
 import {
   LINKEDIN_AUTH_ERROR,
-  FETCH_LINKEDIN_USER_ERROR,
-  LINKEDIN_LOGIN_DATA_ERROR,
   ACCESS_TOKEN_REQUIRED_ERROR,
   USER_ALREADY_EXISTS,
 } from "../utils/errors.js";
@@ -64,22 +61,29 @@ export const linkedInLoginData = async (req, res) => {
         socialAccounts: [provider],
       });
       await newUser.save();
-    } else {
-      if (!user.socialAccounts.includes(provider)) {
-        user.socialAccounts.push(provider);
-        await user.save();
+
+    const jwtToken = generateJwtToken(newUser);
+
+        return res.status(200).json({
+          user: newUser,
+          jwtToken,
+          message: USERDATA_SAVED_SUCCESSFULLY,
+        });
+      } else {
+        if (!user.socialAccounts.includes(provider)) {
+          user.socialAccounts.push(provider);
+          await user.save();
+        }
+  
+        const jwtToken = generateJwtToken(user);
+        return res.status(200).json({
+          user,
+          jwtToken,
+          message: USER_ALREADY_EXISTS,
+        });
       }
-      return res.status(200).json({
-        user,
-        message: USER_ALREADY_EXISTS,
-      });
+    } catch (error) {
+      console.error("Error:", error.message);
+      return res.status(500).json({ error: INTERNAL_ERROR });
     }
-    res.status(200).json(user);
-  } catch (error) {
-    console.error(
-      FETCH_LINKEDIN_USER_ERROR,
-      error.response ? error.response.data : error.message
-    );
-    res.status(500).json({ error: FETCH_LINKEDIN_USER_ERROR });
-  }
-};
+  };

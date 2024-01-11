@@ -35,7 +35,7 @@ const handleGoogleResponse = async (response, storeUserData, navigate) => {
 
   try {
     const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/v1/user/saveUserData`,
+      `${import.meta.env.VITE_API_URL}/v1/user/google-login`,
       { tokenId, provider: idpId }
     );
 
@@ -56,11 +56,11 @@ const handleFacebookResponse = async (response, storeUserData, navigate) => {
   try {
     const { accessToken, graphDomain } = response.authResponse;
     const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/v1/user/facebookLoginData`,
+      `${import.meta.env.VITE_API_URL}/v1/user/facebook-login`,
       { accessToken, provider: graphDomain }
     );
-    const { user, message } = data;
-    if (user) {
+    const { user, message , jwtToken } = data;
+    if (user && jwtToken) {
       storeUserData(user);
       handleToast(message, "success");
       navigate("/");
@@ -77,14 +77,14 @@ const handleLinkedInResponse = async (response, storeUserData, navigate) => {
     const { provider } = response;
     const { access_token } = response.data;
     const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/v1/user/linkedInLoginData`,
+      `${import.meta.env.VITE_API_URL}/v1/user/linkedIn-login`,
       {
         accessToken: access_token,
         provider,
       }
     );
-    const { user, message } = data;
-    if (user) {
+    const { user, message ,jwtToken } = data;
+    if (user && jwtToken) {
       storeUserData(user);
       handleToast(message, "success");
       navigate("/");
@@ -125,7 +125,7 @@ const LinkedInLoginButtonWrapper = ({ onResolve, onReject }) => (
     isOnlyGetToken
     client_id={import.meta.env.VITE_LINKEDIN_CLIENT_ID}
     client_secret={import.meta.env.VITE_LINKEDIN_SECRET_ID}
-    redirect_uri="http://localhost:5173/login"
+    redirect_uri={import.meta.env.VITE_LINKEDIN_REDIRECT_URL}
     scope="profile openid email w_member_social"
     onResolve={onResolve}
     onReject={onReject}
@@ -149,7 +149,7 @@ const SocialLoginForm = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#164E63]">
+    <div className="h-[90vh] flex items-center justify-center bg-[#164E63]">
       <div className="w-full max-w-md p-6 bg-gray-300 rounded-md shadow-md">
         <GoogleLoginButtonWrapper
           onSuccess={(response) =>

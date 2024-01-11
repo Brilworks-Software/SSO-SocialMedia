@@ -14,3 +14,4 @@ export const LINKEDIN_AUTH_ERROR = "Error during LinkedIn authentication";
 export const FETCH_LINKEDIN_USER_ERROR = "Failed to fetch user information from LinkedIn";
 export const LINKEDIN_LOGIN_DATA_ERROR = "Failed to process LinkedIn login data";
 export const ACCESS_TOKEN_REQUIRED_ERROR = "Access token is required";
+export const MONGODB_URI_MISSING = " Mongodb URI is missing"
