@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.internal.build.AllowPrintStacktrace;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,20 +22,26 @@ public class User {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "firstname")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "social_id")
+    private String socialId;
 
-    @Column(name = "provider")
-    @Enumerated(EnumType.STRING)
-    private ProviderEnum role;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<UserSocialHandleLogin> userSocialHandleLogins;
 
+    public User(String firstName, String lastName, String email,String socialId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.socialId=socialId;
+    }
 }
