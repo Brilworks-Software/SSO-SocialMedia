@@ -37,4 +37,5 @@ public class UserProvider {
         this.userId = userId;
         this.provider = provider;
     }
+
 }

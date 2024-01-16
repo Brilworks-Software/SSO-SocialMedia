@@ -12,8 +12,8 @@ import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/user/social-login")
+@RestController
+@RequestMapping("/auth")
 public class AuthController {
     // TODO - Jay - Move this to userService
 

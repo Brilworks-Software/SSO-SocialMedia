@@ -1,7 +1,6 @@
 package com.brilworkstask.social_login.service;
 
 import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
-import com.brilworkstask.social_login.enums.ProviderEnum;
 import com.brilworkstask.social_login.enums.UserStatus;
 import com.brilworkstask.social_login.exception.NotAcceptableException;
 import com.brilworkstask.social_login.model.User;
@@ -14,6 +13,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Properties;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService{
                 return Constants.ALREADY_EXIST;
             }
         }
-
+            
         if (!userRepository.existByEmailId(socialProfileDetailsTransfer.getEmail())) {
             User user = new User(socialProfileDetailsTransfer.getFirstName(),
                     socialProfileDetailsTransfer.getLastName(),
@@ -132,4 +133,5 @@ public class UserServiceImpl implements UserService{
         SocialProfileDetailsTransfer socialProfileDetailsTransfer = oAuthUtils.getUserProfileFromFacebookUsingAuthCode(authenticationCode);
         return save(socialProfileDetailsTransfer);
     }
+
 }
