@@ -6,22 +6,34 @@ import com.brilworkstask.social_login.service.UserServiceImpl;
 import com.brilworkstask.social_login.utils.OAuthUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    // TODO - Jay - Move this to userService
+
+    @Autowired
+    AuthServiceImpl authService;
 
     @Autowired
     UserServiceImpl userService;
 
     @Autowired
     OAuthUtils oAuthUtils;
+
+    @GetMapping("/fetchdata")
+    public ResponseEntity<?> getDataFromAccessToken(@RequestParam("token") String token,
+                                                    @RequestParam("id") String registrationId) throws GeneralSecurityException, IOException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.fetchAndSaveDataGoogleSocialLogin(token,registrationId));
+    }
 
     // Initiates the connection to Facebook for authentication
     @GetMapping("/facebook/connect")

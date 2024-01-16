@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.internal.build.AllowPrintStacktrace;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,6 +34,10 @@ public class User {
     @Column(name = "social_id")
     private String socialId;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<UserSocialHandleLogin> userSocialHandleLogins;
+
     public User(String firstName, String lastName, String email, String socialId) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,4 +45,5 @@ public class User {
         this.socialId = socialId;
 
     }
+
 }
