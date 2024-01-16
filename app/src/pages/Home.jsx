@@ -5,10 +5,10 @@ const Home = () => {
   const { userData } = useUser();
 
   return (
-    <div className="bg-[#164E63] flex flex-grow items-center justify-center">
+    <div className="bg-[#164E63] flex grow items-center justify-center">
       <div className="bg-white p-8 rounded shadow-md max-w-md w-full mx-4">
         <h2 className="text-3xl font-semibold text-gray-800 mb-4 text-center">
-          Welcome to Your Profile, {userData && userData?.name}!
+          Welcome to Your Profile, {userData?.name}!
         </h2>
         {userData && (
           <div className="flex flex-col items-center gap-5">

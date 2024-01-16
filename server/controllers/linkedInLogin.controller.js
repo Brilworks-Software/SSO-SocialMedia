@@ -25,8 +25,8 @@ passport.use(
       try {
         const user = {
           id: profile.id,
-          email: profile.emails ? profile.emails[0].value : null,
-          picture: profile?.photos ? profile.photos[0].value : null,
+          email: profile.emails?.[0]?.value ?? null,
+          picture: profile.photos?.[0]?.value ?? null,
         };
         return done(null, user);
       } catch (error) {

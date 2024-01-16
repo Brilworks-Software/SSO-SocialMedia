@@ -42,7 +42,7 @@ const handleApiResponse = (response, apiFunction, successMessage, errorMessage) 
 };
 
 const handleGoogleResponse = async (response, storeUserData, navigate) => {
-  const { idpId } = response.tokenObj || {};
+  const { idpId } = response.tokenObj;
   const { tokenId } = response;
 
   try {
