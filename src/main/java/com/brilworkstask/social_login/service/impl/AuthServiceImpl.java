@@ -1,7 +1,7 @@
 package com.brilworkstask.social_login.service.impl;
 
 import com.brilworkstask.social_login.dto.UserDto;
-import com.brilworkstask.social_login.exceptions.TokenNotValidException;
+import com.brilworkstask.social_login.exception.TokenNotValidException;
 import com.brilworkstask.social_login.service.AuthService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
