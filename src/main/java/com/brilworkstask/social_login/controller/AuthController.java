@@ -1,8 +1,8 @@
 package com.brilworkstask.social_login.controller;
 
 import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
-import com.brilworkstask.social_login.service.UserServiceImpl;
 import com.brilworkstask.social_login.service.impl.AuthServiceImpl;
+import com.brilworkstask.social_login.service.impl.UserServiceImpl;
 import com.brilworkstask.social_login.utils.OAuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
