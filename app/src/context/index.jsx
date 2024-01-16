@@ -1,12 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
-  useEffect(() => {
-    storeUserData();
-  }, []);
 
   const storeUserData = (data) => {
     setUserData(data);

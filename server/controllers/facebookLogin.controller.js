@@ -3,10 +3,7 @@ import passport from "passport";
 import FacebookTokenStrategy from "passport-facebook-token";
 import { generateJwtToken } from "../config/generateToken.js";
 import { User } from "../models/socialLogin.model.js";
-import {
-  FACEBOOK_AUTH_ERROR,
-  USER_ALREADY_EXISTS,
-} from "../utils/errors.js";
+import { FACEBOOK_AUTH_ERROR, INTERNAL_ERROR, USERDATA_SAVED_SUCCESSFULLY, USER_ALREADY_EXISTS } from "../utils/errors.js";
 
 passport.use(
   new FacebookTokenStrategy(
@@ -35,6 +32,11 @@ passport.use(
 
 export const facebookLoginAuth = async (req, res, next) => {
   const { accessToken, provider } = req.body;
+
+  if (!accessToken) {
+    return res.status(400).json({ error: ACCESS_TOKEN_REQUIRED_ERROR });
+  }
+
   try {
     const response = await axios.get(
       `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${accessToken}`
@@ -54,28 +56,28 @@ export const facebookLoginAuth = async (req, res, next) => {
         picture: pictureUrl,
         socialAccounts: [provider],
       });
-        const jwtToken = generateJwtToken(newUser);
+      const jwtToken = generateJwtToken(newUser);
 
-        return res.status(200).json({
-          user: newUser,
-          jwtToken,
-          message: USERDATA_SAVED_SUCCESSFULLY,
-        });
-      } else {
-        if (!user.socialAccounts.includes(provider)) {
-          user.socialAccounts.push(provider);
-          await user.save();
-        }
-  
-        const jwtToken = generateJwtToken(user);
-        return res.status(200).json({
-          user,
-          jwtToken,
-          message: USER_ALREADY_EXISTS,
-        });
+      return res.status(200).json({
+        user: newUser,
+        jwtToken,
+        message: USERDATA_SAVED_SUCCESSFULLY,
+      });
+    } else {
+      if (!user.socialAccounts.includes(provider)) {
+        user.socialAccounts.push(provider);
+        await user.save();
       }
-    } catch (error) {
-      console.error("Error:", error.message);
-      return res.status(500).json({ error: INTERNAL_ERROR });
+
+      const jwtToken = generateJwtToken(user);
+      return res.status(200).json({
+        user,
+        jwtToken,
+        message: USER_ALREADY_EXISTS,
+      });
     }
-  };
+  } catch (error) {
+    console.error("Error:", error.message);
+    return res.status(500).json({ error: INTERNAL_ERROR });
+  }
+};
