@@ -1,9 +1,8 @@
-package com.brilworkstask.social_login.exceptions;
+package com.brilworkstask.social_login.exception;
 
 public class TokenNotValidException extends RuntimeException{
     private Integer status;
     private String errorMessage;
-
     private String developerMessage;
 
     public TokenNotValidException(Integer status, String errorMessage, String developerMessage) {

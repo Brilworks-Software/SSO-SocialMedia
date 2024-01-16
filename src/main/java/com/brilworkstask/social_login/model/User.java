@@ -38,10 +38,12 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<UserSocialHandleLogin> userSocialHandleLogins;
 
-    public User(String firstName, String lastName, String email,String socialId) {
+    public User(String firstName, String lastName, String email, String socialId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.socialId=socialId;
+        this.socialId = socialId;
+
     }
+
 }
