@@ -1,6 +1,7 @@
 package com.brilworkstask.social_login.service;
 
 import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
+import com.brilworkstask.social_login.dto.UserDto;
 import com.brilworkstask.social_login.enums.UserStatus;
 import com.brilworkstask.social_login.exception.NotAcceptableException;
 import com.brilworkstask.social_login.model.User;
@@ -9,6 +10,7 @@ import com.brilworkstask.social_login.repository.UserProviderRepository;
 import com.brilworkstask.social_login.repository.UserRepository;
 import com.brilworkstask.social_login.utils.Constants;
 import com.brilworkstask.social_login.utils.OAuthUtils;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
@@ -134,4 +136,8 @@ public class UserServiceImpl implements UserService{
         return save(socialProfileDetailsTransfer);
     }
 
+    @Override
+    public UserDto saveUserData(GoogleIdToken.Payload payload, String registrationID) {
+        return null;
+    }
 }

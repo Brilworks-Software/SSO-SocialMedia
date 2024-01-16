@@ -1,16 +1,14 @@
 package com.brilworkstask.social_login.controller;
 
 import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
-import com.brilworkstask.social_login.service.UserService;
 import com.brilworkstask.social_login.service.UserServiceImpl;
+import com.brilworkstask.social_login.service.impl.AuthServiceImpl;
 import com.brilworkstask.social_login.utils.OAuthUtils;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.social.facebook.connect.FacebookConnectionFactory;
+
 import org.springframework.social.oauth2.OAuth2Parameters;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;

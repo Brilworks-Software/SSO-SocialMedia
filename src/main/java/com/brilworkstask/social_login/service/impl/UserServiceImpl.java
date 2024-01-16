@@ -1,5 +1,6 @@
 package com.brilworkstask.social_login.service.impl;
 
+import com.brilworkstask.social_login.dto.SocialProfileDetailsTransfer;
 import com.brilworkstask.social_login.dto.UserDto;
 import com.brilworkstask.social_login.enums.ProviderEnum;
 import com.brilworkstask.social_login.model.User;
@@ -71,5 +72,27 @@ public class UserServiceImpl implements UserService {
     private String[] getFirstNameOrLastname(Object object) {
         String name = (String) object;
         return name.split(" ");
+    }
+
+    //================m
+
+    @Override
+    public String save(SocialProfileDetailsTransfer socialProfileDetailsTransfer) {
+        return null;
+    }
+
+    @Override
+    public SocialProfileDetailsTransfer fetchUserDataFromFacebookApi(String accessToken) {
+        return null;
+    }
+
+    @Override
+    public SocialProfileDetailsTransfer fetchUserDataFromLinkedinApi(String accessToken) {
+        return null;
+    }
+
+    @Override
+    public String fetchUserDataUsingCallBackApi(String authenticationCode) {
+        return null;
     }
 }
