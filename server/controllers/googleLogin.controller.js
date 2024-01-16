@@ -15,7 +15,7 @@ const clientId = process.env.CLIENT_ID;
 const authClient = new OAuth2Client(clientId);
 
 // Controller function to save user data from social login
-export const saveUserData = async (req, res) => {
+export const googleLoginAuth = async (req, res) => {
   // Extracting tokenId and provider from the request body
   const { tokenId, provider } = req.body;
   try {
@@ -44,8 +44,8 @@ export const saveUserData = async (req, res) => {
       const newUser = new User({
         id: sub,
         email,
-        name: name,
-        picture: picture,
+        name,
+        picture,
         socialAccounts: [provider], // Add the provider to the socialAccounts array
       });
 

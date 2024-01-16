@@ -7,6 +7,8 @@ import {
   LINKEDIN_AUTH_ERROR,
   ACCESS_TOKEN_REQUIRED_ERROR,
   USER_ALREADY_EXISTS,
+  INTERNAL_ERROR,
+  USERDATA_SAVED_SUCCESSFULLY,
 } from "../utils/errors.js";
 
 passport.use(
@@ -24,7 +26,7 @@ passport.use(
         const user = {
           id: profile.id,
           email: profile.emails ? profile.emails[0].value : null,
-          picture: profile.photos ? profile.photos[0].value : null,
+          picture: profile?.photos ? profile.photos[0].value : null,
         };
         return done(null, user);
       } catch (error) {
@@ -35,8 +37,8 @@ passport.use(
   )
 );
 
-export const linkedInLoginData = async (req, res) => {
-  const { accessToken, provider } = req.body;
+export const linkedInLoginAuth = async (req, res) => {
+  const { accessToken, provider } = req?.body;
   if (!accessToken) {
     return res.status(400).json({ error: ACCESS_TOKEN_REQUIRED_ERROR });
   }
@@ -48,7 +50,7 @@ export const linkedInLoginData = async (req, res) => {
         "Content-Type": "application/json",
       },
     });
-    const { name, sub, email, picture } = response.data;
+    const { name, sub, email, picture } = response?.data;
 
     const user = await User.findOne({ email });
 
@@ -71,7 +73,7 @@ export const linkedInLoginData = async (req, res) => {
         });
       } else {
         if (!user.socialAccounts.includes(provider)) {
-          user.socialAccounts.push(provider);
+          user?.socialAccounts.push(provider);
           await user.save();
         }
   
@@ -83,7 +85,7 @@ export const linkedInLoginData = async (req, res) => {
         });
       }
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error:", error?.message);
       return res.status(500).json({ error: INTERNAL_ERROR });
     }
   };
