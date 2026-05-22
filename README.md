@@ -1,21 +1,34 @@
-# Social-Login
+# SSO Social Media Login
 
-Here are the links of the documentation for all social login : 
+Single Sign-On integration with social media providers (Google, Facebook, Apple, GitHub, LinkedIn).
 
-Google Social Login Documentation : 
+## Features
 
-https://drive.google.com/file/d/13AeucQ_5w7nUOqMf4_t2XD3PbHrkWFpG/view?usp=sharing
+- Google OAuth login
+- Facebook Login integration
+- Apple Sign-In
+- GitHub OAuth
+- LinkedIn OAuth
 
-Facebook Login Documentation :
+## Tech Stack
 
-https://drive.google.com/file/d/1fPB5cpc22IXAKLJYaaTjWXmi-dbVVQVk/view?usp=sharing
+- **Backend:** Java, Spring Boot
+- **Frontend:** React.js
 
-LinkedIn Login Documentation : 
+## Documentation
 
-https://drive.google.com/file/d/1oUtK-3XBj29e9uCQEoARxq-HqpLOV_eQ/view?usp=sharing
+Detailed setup guides are available in the repository's docs folder.
 
-And this is the link of the google drive folder where you will the screencast of these as well : 
+## Getting Started
 
-https://drive.google.com/drive/folders/1kvqr9_qtnq-H03YnfbR81fSfqRqcjtu9?usp=sharing
+```bash
+# Backend
+cd backend && mvn spring-boot:run
 
-Follow steps mentioned in the documentation to integrate social login in your web application.
+# Frontend
+cd frontend && npm install && npm start
+```
+
+## License
+
+Proprietary — Brilworks Software
